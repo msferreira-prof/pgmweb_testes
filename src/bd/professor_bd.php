@@ -2,7 +2,7 @@
 
 /* insere apenas uma vez os arquivos com as funcoes e classes utilizadas */
 require_once '../modelo/professor.php';
-require_once '../bd/professor_bd.php';
+// require_once '../bd/professor_bd.php';
 require_once '../bd/bd.php';
 
 // incluir professor

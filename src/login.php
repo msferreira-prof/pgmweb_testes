@@ -49,7 +49,7 @@
                 <!-- coluna (grid system) -->
                 <div class="col">
                     <!-- bloco tipo "alerta", alerta backgroundcolor, alerta pode ser desfeito / papel = alerta -->
-                    <div class="alert alert-success alert-dismissible" role="alert">
+                    <div class="alert alert-warning alert-dismissible" role="alert">
                         <!-- ancora, classe="close" botao pode ser desfeito -->
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         <?=$mensagem?>

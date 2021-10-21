@@ -1,12 +1,4 @@
 <?php
-
-$objeto = new Professor();
-$objeto->setMatricula(10);
-$objeto->setNome("Marcos");
-
-$objeto2 = new Professor(10, "Marcos");
-
-
 class Professor {
 
     private $matricula;
