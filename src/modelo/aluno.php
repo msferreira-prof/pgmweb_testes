@@ -1,5 +1,6 @@
 <?php
 
+namespace Mcosf\Testes;
 class Aluno {
     private $matricula;
     private $nome;

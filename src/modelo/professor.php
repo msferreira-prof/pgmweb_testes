@@ -1,4 +1,6 @@
 <?php
+
+namespace Mcosf\Testes;
 class Professor {
 
     private $matricula;
