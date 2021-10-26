@@ -6,7 +6,7 @@ use Mcosf\Testes\Professor;
 require '../bd/bd.php';
 
 // preparar o cenario / GIVEN
-$nomeProfessor     = 'Augusto AJoana';
+$nomeProfessor     = 'Augusto Joana';
 $nomeProfessorLido = '';
 
 // conectar BD
