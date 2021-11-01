@@ -1,7 +1,5 @@
 <?php
 
-use PDO;
-
 // abrir conexao com o BD
 function conectarBD() {
     $dbHost = "localhost";

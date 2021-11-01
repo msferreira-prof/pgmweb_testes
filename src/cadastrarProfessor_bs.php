@@ -110,12 +110,21 @@
         </div>
 
         <!-- formulario HTML -->
-        <form name="frmCadastrarProfessor" action="servicos/professor_servico.php" method="post" class="my-label-color-purple">
+        <form name="frmCadastrarProfessor" action="servicos/professor_servico.php" method="post" class="my-label-color-purple" enctype="multipart/form-data">
 
             <div class="form-group row">
                 <label for="idNomeProfessor" class="col-sm-2 col-form-label">Nome do Professor</label>
                 <div class="col-sm-10">
                     <input class="form-control" type="text" id="idNomeProfessor" name="nomeProfessor" placeholder="Informe o nome do professor" maxlength="45" required>  
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="idFoto" class="col-sm-2 col-form-label">Foto do Professor</label>
+                <div class="col-sm-10">
+                    <!-- MAX_FILE_SIZE deve preceder o campo input. Representa o tamanho limite aceito pelo PHP -->
+                    <input type="hidden" name="MAX_FILE_SIZE" value="300000" />
+                    <input class="form-control" type="file" id="idFotoProfessor" name="fotoProfessor" placeholder="Insira uma foto do professor">  
                 </div>
             </div>
 

@@ -8,17 +8,40 @@ require_once '../bd/bd.php';
 use Mcosf\Testes\Professor;
 
 // incluir professor
-function incluir(string $nomeProfessor) {
+function incluir(string $nomeProfessor, $fotoProfessor) {
 
+    // prepara a foto
+    $mySqlImg = NULL;
+    if ( $fotoProfessor != NULL ) {
+
+        $nomeFoto = time(). '.jpg';
+
+        if ( move_uploaded_file( $fotoProfessor['tmp_name'], $nomeFoto) ) {
+
+            $tamanhoImagem = filesize($nomeFoto);
+            $handle = fopen($nomeFinal, "r");
+            $mysqlImg = addslashes(fread($handle, $tamanhoImg));
+            fclose($handle);
+            
+
+        }
+    }
+    
     // conectar BD
     $con = conectarBD();
 
     // executar a query
-    $stmt = $con->prepare("INSERT INTO professores (matricula, nome) VALUES (DEFAULT, ?)");
-    $stmt->bindParam(1, $nomeProfessor);
+    $stmt = $con->prepare("INSERT INTO professores (matricula, nome, fotoProfessor) VALUES (DEFAULT, :nomeProfessor, :mySqlImg)");
+    $stmt->bindParam(':nomeProfessor', $nomeProfessor);
+    $stmt->bindParam(':mySqlImg', $mySqlImg);
 
-    $stmt->execute();
-
+    try {
+        $stmt->execute();
+    } catch ( PDOException $e ) {
+        echo 'Erro ao conectar o MySQL: ' . $e->getMessage();
+        exit();
+    }
+    
     // recuperar o codigo gerado 
     $matriculaGerada = $con->lastInsertId();
 
@@ -73,7 +96,7 @@ function validarNomeDuplicado(string $nomeProfessor) {
     $stmt->bindParam(':nomeProfessor', $nomeProfessor);
 
     if ( $stmt->execute() ) {
-        $registros = $stmt->fetchAll( PDO::FETCH_CLASS, "professor" );
+        $registros = $stmt->fetchAll( PDO::FETCH_CLASS, "Mcosf\Testes\Professor" );
     
         if ( $registros != null and sizeof($registros) > 0 ) {
             $retorno = true;
@@ -100,7 +123,7 @@ function validarNomeDuplicadoV2(string $nomeProfessor) {
     $stmt->bindParam(':nomeProfessor', $nomeProfessor);
 
     if ( $stmt->execute() ) {
-        $registros = $stmt->fetchAll( PDO::FETCH_CLASS, "professor" );
+        $registros = $stmt->fetchAll( PDO::FETCH_CLASS, "Mcosf\Testes\Professor" );
     
         if ( $registros != null and sizeof($registros) > 0 ) {
             $retorno = $registros[0];

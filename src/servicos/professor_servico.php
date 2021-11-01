@@ -16,6 +16,21 @@ if ( $sessaoValida != true ) {
 /* receber nome do professor do formulario HTML */
 $nomeProfessor = $_POST['nomeProfessor'];
 
+/* valida tamanho da foto */
+if ( $_FILES['userfile']['error'] != UPLOAD_ERR_OK ) {
+    
+    $_SESSION['mensagemRetorno'] = 'Tamanho da imagem informada excede o limite permitido';
+    
+    /* retorna para a pagina de cadastro do professor */
+    header('location: ../cadastrarProfessor_bs.php');
+    
+    return;
+
+} else {
+    $fotoProfessor = $_FILES['fotoProfessor'];
+}
+
+
 /* validacao pode ser feita no PHP ou no Javascript */
 if ( strlen($nomeProfessor) < 15 ) {
     $_SESSION['mensagemRetorno'] = 'Nome de professor informado menor que 15 caracteres';
@@ -55,7 +70,7 @@ if ( $objProfessor != null ) {
 }
 
 // inclusao
-$objProfessor = incluir($nomeProfessor);
+$objProfessor = incluir($nomeProfessor, $fotoProfessor);
 
 if ($objProfessor != null) {
     $mensagemRetorno = "Professor '" . $objProfessor->getNome() . 
