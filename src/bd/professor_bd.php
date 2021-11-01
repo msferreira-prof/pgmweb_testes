@@ -5,6 +5,8 @@ require_once '../modelo/professor.php';
 // require_once '../bd/professor_bd.php';
 require_once '../bd/bd.php';
 
+use Mcosf\Testes\Professor;
+
 // incluir professor
 function incluir(string $nomeProfessor) {
 
@@ -46,7 +48,7 @@ function listar() {
     // listar professores
     $stmt = $con->prepare("SELECT matricula, nome FROM professores");
     if ( $stmt->execute() ) {
-        $registros = $stmt->fetchAll( PDO::FETCH_CLASS, "professor");
+        $registros = $stmt->fetchAll( PDO::FETCH_CLASS, "Mcosf\Testes\Professor");
     }
 
     // desconectar BD

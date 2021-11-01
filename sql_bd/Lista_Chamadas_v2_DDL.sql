@@ -9,6 +9,7 @@ USE lista_chamadas_v2;
 CREATE TABLE professores (
 matricula INT NOT NULL AUTO_INCREMENT,
 nome VARCHAR(45) NOT NULL,
+foto MEDIUMBLOB NULL,
 PRIMARY KEY (matricula)
 )
 DEFAULT CHARACTER SET = utf8;

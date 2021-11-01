@@ -3,8 +3,15 @@
 require_once '../modelo/professor.php';
 require_once '../bd/professor_bd.php';
 
-/* criar uma sessao */
+/* verifica se uma sessao esta criada, validando a entrada, caso contrario vai para o login */
 session_start();
+$sessaoValida = isset($_SESSION['idSessao']) ? $_SESSION['idSessao'] === session_id() : FALSE;
+
+if ( $sessaoValida != true ) {
+   header('Location: ../login.php');
+   exit();
+}
+
 
 /* receber nome do professor do formulario HTML */
 $nomeProfessor = $_POST['nomeProfessor'];

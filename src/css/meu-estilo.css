@@ -27,6 +27,13 @@
     color: #470864;
 }
 
+.usuario {
+    font-size: 14px;
+    color: #470864;
+    padding-top: 20px;
+    padding-left: 20px;
+}
+
 /* outros */
 .my-h2 {
     font-size: 36px;
