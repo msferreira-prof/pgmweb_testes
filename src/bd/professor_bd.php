@@ -14,15 +14,14 @@ function incluir(string $nomeProfessor, $fotoProfessor) {
     $mySqlImg = NULL;
     if ( $fotoProfessor != NULL ) {
 
+        // gera um nome de arquivo novo baseado na hora do servidor
         $nomeFoto = time(). '.jpg';
 
-        if ( move_uploaded_file( $fotoProfessor['tmp_name'], $nomeFoto) ) {
+        // move a imagem para uma area de downlods na aplicacao
+        if ( move_uploaded_file( $fotoProfessor['tmp_name'], '../uploads/' . $nomeFoto) ) {
 
             $tamanhoImagem = filesize($nomeFoto);
-            $handle = fopen($nomeFinal, "r");
-            $mysqlImg = addslashes(fread($handle, $tamanhoImg));
-            fclose($handle);
-            
+            $mysqlImg = fopen(fread($handle, $tamanhoImagem), "r");
 
         }
     }
@@ -31,20 +30,16 @@ function incluir(string $nomeProfessor, $fotoProfessor) {
     $con = conectarBD();
 
     // executar a query
-    $stmt = $con->prepare("INSERT INTO professores (matricula, nome, fotoProfessor) VALUES (DEFAULT, :nomeProfessor, :mySqlImg)");
-    $stmt->bindParam(':nomeProfessor', $nomeProfessor);
-    $stmt->bindParam(':mySqlImg', $mySqlImg);
+    $stmt = $con->prepare("INSERT INTO professores (matricula, nome, nomeFoto, foto) VALUES (DEFAULT, ?, ?, ?)");
+    $stmt->bindParam(1, $nomeProfessor, PDO::PARAM_STR); // define o tipo de parametro - String
+    $stmt->bindParam(2, $nomeFoto, PDO::PARAM_STR); // define o tipo de parametro como String    '../uploads/' . 
+    $stmt->bindParam(3, $mysqlImg, PDO::PARAM_LOB); // define o tipo de parametro como LOB - Large Object
 
-    try {
-        $stmt->execute();
-    } catch ( PDOException $e ) {
-        echo 'Erro ao conectar o MySQL: ' . $e->getMessage();
-        exit();
+    if ( $stmt->execute() ) {
+        // recuperar o codigo gerado 
+        $matriculaGerada = $con->lastInsertId();
     }
     
-    // recuperar o codigo gerado 
-    $matriculaGerada = $con->lastInsertId();
-
     // liberar o objeto de execucao da query
     $stmt = null;
 
@@ -69,7 +64,7 @@ function listar() {
     $con = conectarBD();
 
     // listar professores
-    $stmt = $con->prepare("SELECT matricula, nome FROM professores");
+    $stmt = $con->prepare("SELECT matricula, nome, nomeFoto FROM professores");
     if ( $stmt->execute() ) {
         $registros = $stmt->fetchAll( PDO::FETCH_CLASS, "Mcosf\Testes\Professor");
     }
@@ -131,4 +126,31 @@ function validarNomeDuplicadoV2(string $nomeProfessor) {
     }
     
     return $retorno;
+}
+
+function baixarImagem(int $matriculaProfessor) {
+
+    $nomeImagem = NULL;
+
+    $stmt = null;
+    $registros = null;
+
+    // conectar BD
+    $con = conectarBD();
+    
+    // executar a query
+    $stmt = $con->prepare("SELECT foto FROM professores WHERE matricula = :matriculaProfessor" );
+    $stmt->bindParam(':matriculaProfessor', $matriculaProfessor);
+
+    if ( $stmt->execute() ) {
+        $registros = $stmt->fetch();
+
+        if ( $registros != null and sizeof($registros) > 0 ) {
+            $nomeImagem = 'downloads/' . $registros['foto'];
+
+
+        }
+    }
+
+    return $nomeImagem;
 }

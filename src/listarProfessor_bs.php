@@ -38,6 +38,9 @@
 
     <link href="img/php.ico" rel="shortcut icon">
 
+    <!-- versao gratuita do Font Awesome icons-->
+    <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
+
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
@@ -105,6 +108,7 @@
                     <tr>
                         <th>Matrícula</th>
                         <th>Professor</th>
+                        <th>Foto</th>
                     </tr>
                 </thead>
 
@@ -117,6 +121,9 @@
                             foreach($professores as $objProfessor) {  
                                 $matricula = $objProfessor->getMatricula();
                                 $nome = $objProfessor->getNome();
+                                $imagem = $objProfessor->getNomeFoto() != NULL ?                                 
+                                            'uploads/' . $objProfessor->getNomeFoto() :
+                                            '#';
                     ?>
 
                     <tr>
@@ -125,7 +132,13 @@
                         </td>
                         <td>
                             <?=$nome;?>
-                        </td> <!-- coluna Funcionario -->
+                        </td> 
+                        <td>
+                            <button type="button" class="btn" role="button" data-target="#modalProfessor"
+                                    data-toggle="modal"  data-nome="Prof(a) <?=$nome;?>" data-url="<?=$imagem;?>">
+                                <i class="fas fa-portrait"></i>
+                            </button>
+                        </td>                        
                     </tr>
 
                     <?php
@@ -164,6 +177,32 @@
         </div>
     </footer>
 
+
+    <!-- Modais -->
+    <div class="modal fade" id="modalProfessor" role="dialog" aria-labelledby="<?=$nome?>" aria-hidden="true">
+
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 id="tituloModal" class="modal-title meu-h5-font-size"></h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                
+                <div class="modal-body text-center">
+                    <img src="" id="foto" height="300" width="300" class="img-fluid img-thumbnail" alt="Foto não encontrada">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Fechar</button>
+                </div>
+
+            </div>
+
+        </div>
+    
+    </div>
     <!-- seu codigo termina aqui -->
 
     <!-- Bootstrap -->
@@ -173,6 +212,19 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous">
     </script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#modalProfessor').on('show.bs.modal', function(event) {
+                var imagem = $(event.relatedTarget).data('url');
+                var nomeProfessor = $(event.relatedTarget).data('nome');
+                $("#tituloModal").text(nomeProfessor);
+                $("#foto").attr('src', imagem);
+            });
+        });
+    </script>
+
 
 </body>
 

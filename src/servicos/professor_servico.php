@@ -69,6 +69,20 @@ if ( $objProfessor != null ) {
     return;
 }
 
+// valida tipo de imagem
+$tiposImagem = ['image/jpeg', 'image/png', 'image/jpg'];
+if ( in_array($fotoProfessor['type'], $tiposImagem, false ) == FALSE ) {
+    
+    $_SESSION['mensagemRetorno'] = 
+            'Formato de imagem incorreto. Formatos permitidos: jpg, png e jpeg.';
+    
+    /* retorna para a pagina de cadastro do professor */
+    header('location: ../cadastrarProfessor_bs.php');
+    
+    return;
+}
+
+
 // inclusao
 $objProfessor = incluir($nomeProfessor, $fotoProfessor);
 
