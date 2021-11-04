@@ -15,12 +15,13 @@
 
 
     // recupera o usuario logado, caso contrario vai para o login
-    if ($_SESSION['usuarioLogado'] == NULL) {
-        header('location: login.php');
-    } else {
+    if ($_SESSION['usuarioLogado'] != NULL) {
         // nao se esqueca de desserializar o objeto
         $usuarioLogado = unserialize($_SESSION['usuarioLogado']);
         $nomeUsuarioLogado = $usuarioLogado->getNome();     
+    } else {
+        header('Location: login.php');
+        exit();
     }
 ?>
 
@@ -120,11 +121,11 @@
             </div>
 
             <div class="form-group row">
-                <label for="idFoto" class="col-sm-2 col-form-label">Foto do Professor</label>
+                <label for="idFotoProfessor" class="col-sm-2 col-form-label">Foto do Professor</label>
                 <div class="col-sm-10">
                     <!-- MAX_FILE_SIZE deve preceder o campo input. Representa o tamanho limite aceito pelo PHP -->
                     <input type="hidden" name="MAX_FILE_SIZE" value="300000" />
-                    <input class="form-control" type="file" id="idFotoProfessor" name="fotoProfessor" placeholder="Insira uma foto do professor">  
+                    <input class="form-control" type="file" id="idFotoProfessor" name="fotoProfessor" placeholder="Insira a foto do professor">  
                 </div>
             </div>
 

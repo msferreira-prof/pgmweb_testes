@@ -16,12 +16,14 @@
     }
     
     // recupera o usuario logado, caso contrario vai para o login
-    if ($_SESSION['usuarioLogado'] == NULL) {
-        header('location: login.php');
-    } else {
+    if ($_SESSION['usuarioLogado'] != NULL) {
         // nao se esqueca de desserializar o objeto
         $usuarioLogado = unserialize($_SESSION['usuarioLogado']);
         $nomeUsuarioLogado = $usuarioLogado->getNome();     
+        
+    } else {
+        header('Location: login.php');
+        exit();
     }
 
     // recupera lista de professores
@@ -124,6 +126,13 @@
                                 $imagem = $objProfessor->getNomeFoto() != NULL ?                                 
                                             'uploads/' . $objProfessor->getNomeFoto() :
                                             '#';
+
+                                /* a linha 125 utiliza um operador ternario e faz o mesmo que o abaixo */
+                                // if ( $objProfessor->getNomeFoto() != NULL ) {
+                                //     $imagem = 'uploads/' . $objProfessor->getNomeFoto();
+                                // } else {
+                                //     $imagem = '#';
+                                // }
                     ?>
 
                     <tr>
@@ -213,7 +222,7 @@
         integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous">
     </script>
 
-
+    <!-- Prepara o modal com os dados da imagem do professor -->
     <script type="text/javascript">
         $(document).ready(function() {
             $('#modalProfessor').on('show.bs.modal', function(event) {

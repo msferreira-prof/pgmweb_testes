@@ -16,18 +16,32 @@ if ( $sessaoValida != true ) {
 /* receber nome do professor do formulario HTML */
 $nomeProfessor = $_POST['nomeProfessor'];
 
-/* valida tamanho da foto */
-if ( $_FILES['userfile']['error'] != UPLOAD_ERR_OK ) {
+/* valida se upload da foto foi com sucesso */
+if ( $_FILES['fotoProfessor']['error'] == UPLOAD_ERR_OK ) {
     
+    $fotoProfessor = $_FILES['fotoProfessor'];
+
+} else {
     $_SESSION['mensagemRetorno'] = 'Tamanho da imagem informada excede o limite permitido';
     
     /* retorna para a pagina de cadastro do professor */
-    header('location: ../cadastrarProfessor_bs.php');
+    header('Location: ../cadastrarProfessor_bs.php');
     
     return;
+}
 
-} else {
-    $fotoProfessor = $_FILES['fotoProfessor'];
+// valida tipo de imagem do upload
+// sao apenas aceitas imagens do tipo JPEG, PNG e JPG
+$tiposImagem = ['image/jpeg', 'image/png', 'image/jpg'];
+if ( in_array($fotoProfessor['type'], $tiposImagem, false ) == FALSE ) {
+    
+    $_SESSION['mensagemRetorno'] = 
+            'Formato de imagem incorreto. Formatos permitidos: jpg, png e jpeg.';
+    
+    /* retorna para a pagina de cadastro do professor */
+    header('Location: ../cadastrarProfessor_bs.php');
+    
+    return;
 }
 
 
@@ -69,18 +83,7 @@ if ( $objProfessor != null ) {
     return;
 }
 
-// valida tipo de imagem
-$tiposImagem = ['image/jpeg', 'image/png', 'image/jpg'];
-if ( in_array($fotoProfessor['type'], $tiposImagem, false ) == FALSE ) {
-    
-    $_SESSION['mensagemRetorno'] = 
-            'Formato de imagem incorreto. Formatos permitidos: jpg, png e jpeg.';
-    
-    /* retorna para a pagina de cadastro do professor */
-    header('location: ../cadastrarProfessor_bs.php');
-    
-    return;
-}
+
 
 
 // inclusao

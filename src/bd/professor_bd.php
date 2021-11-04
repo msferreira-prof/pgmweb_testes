@@ -15,13 +15,20 @@ function incluir(string $nomeProfessor, $fotoProfessor) {
     if ( $fotoProfessor != NULL ) {
 
         // gera um nome de arquivo novo baseado na hora do servidor
-        $nomeFoto = time(). '.jpg';
+        $path = $fotoProfessor['name'];
+        $extensao = pathinfo($path, PATHINFO_EXTENSION); // recupera a extensao do arquivo recebido
+        $nomeFoto = time() . '.' . $extensao;
 
         // move a imagem para uma area de downlods na aplicacao
         if ( move_uploaded_file( $fotoProfessor['tmp_name'], '../uploads/' . $nomeFoto) ) {
 
-            $tamanhoImagem = filesize($nomeFoto);
-            $mysqlImg = fopen(fread($handle, $tamanhoImagem), "r");
+            // recupera o tamanho do arquivo
+            $tamanhoImagem = filesize('../uploads/'. $nomeFoto);
+
+            // abre o arquivo, le todo o conteudo para a variavel $mySqlImg e fecha o arquivo
+            $handle = fopen('../uploads/' . $nomeFoto, "r");
+            $mySqlImg = fread($handle, $tamanhoImagem);
+            fclose($handle);
 
         }
     }
@@ -33,7 +40,7 @@ function incluir(string $nomeProfessor, $fotoProfessor) {
     $stmt = $con->prepare("INSERT INTO professores (matricula, nome, nomeFoto, foto) VALUES (DEFAULT, ?, ?, ?)");
     $stmt->bindParam(1, $nomeProfessor, PDO::PARAM_STR); // define o tipo de parametro - String
     $stmt->bindParam(2, $nomeFoto, PDO::PARAM_STR); // define o tipo de parametro como String    '../uploads/' . 
-    $stmt->bindParam(3, $mysqlImg, PDO::PARAM_LOB); // define o tipo de parametro como LOB - Large Object
+    $stmt->bindParam(3, $mySqlImg, PDO::PARAM_LOB); // define o tipo de parametro como LOB - Large Object
 
     if ( $stmt->execute() ) {
         // recuperar o codigo gerado 
@@ -50,6 +57,7 @@ function incluir(string $nomeProfessor, $fotoProfessor) {
     $objProfessor = new Professor();
     $objProfessor->setMatricula($matriculaGerada);
     $objProfessor->setNome($nomeProfessor);
+    $objProfessor->setNomeFoto($nomeFoto);
 
     return $objProfessor;
 }
