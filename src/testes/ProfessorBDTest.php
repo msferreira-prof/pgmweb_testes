@@ -1,5 +1,4 @@
 <?php
-
 require 'src/bd/bd.php';
 
 use PHPUnit\Framework\TestCase;
@@ -10,7 +9,7 @@ use Mcosf\Testes\Professor;
 class ProfessorBDTest extends TestCase {
 
     public function testProfessorEncontrado() {
-     
+    
         // preparar o cenario / ARRANGE / GIVEN
         $nomeProfessor = 'Augusto Joana';
         $nomeProfessorLido = '';

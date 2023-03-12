@@ -4,9 +4,9 @@
 function conectarBD() {
     $dbHost = "localhost";
     $dbUsuario = "root";
-    $dbSenha = "";
+    $dbSenha = "root";
     $dbSchema = "lista_chamadas_v2";
-    $dbPort = 3306;
+    $dbPort = 8889;
     $dbCharset = "utf8";
 
 
