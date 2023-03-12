@@ -1,6 +1,8 @@
 <?php
+    // cria uma nova secao sempre que entrar
     session_start();
 
+    // recupera o usuario logado e remove se existir, para comecar nova sessao
     if ($_SESSION['usuarioLogado'] != NULL) {
        unset($_SESSION['usuarioLogado']);
     }

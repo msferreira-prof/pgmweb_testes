@@ -1,6 +1,7 @@
 <?php
 
 namespace Mcosf\Testes;
+
 class Usuario {
 
     private $id;
@@ -43,8 +44,7 @@ class Usuario {
         $this->senha = $senha;
     }
 
-    public function recuperarSenha() {
+    public function recuperarSenha() : string {
         return $this->senha;
     }
-
 }

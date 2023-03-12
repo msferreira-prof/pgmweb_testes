@@ -27,6 +27,13 @@
     color: #470864;
 }
 
+.usuario {
+    font-size: 16px;
+    color: #470864;
+    padding-top: 20px;
+    padding-left: 20px;
+}
+
 /* outros */
 .my-h2 {
     font-size: 36px;
@@ -40,7 +47,7 @@
 }
 
 .meu-h5-font-size {
-    font-size: 1.2em;
+    font-size: 1em;
 }
 
 /* tabelas */

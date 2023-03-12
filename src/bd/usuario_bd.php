@@ -1,5 +1,4 @@
 <?php
-
 require_once '../modelo/usuario.php';
 require_once 'bd.php';
 
@@ -19,7 +18,8 @@ function consultar(string $nomeUsuario) {
     $count = $stmt->rowCount();
 
     if ($count > 0) {
-        $stmt->setFetchMode( PDO::FETCH_CLASS, "usuario");
+        // define a classe para os objetos a serem criados (utilizar o namespace)
+        $stmt->setFetchMode( PDO::FETCH_CLASS, "Mcosf\Testes\Usuario");
         $objUsuario = $stmt->fetch();
     }
 

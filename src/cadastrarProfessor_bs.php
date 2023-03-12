@@ -1,5 +1,28 @@
 <?php
+    
+    require 'modelo/usuario.php';
+    use Mcosf\Testes\Usuario;
+
+    
+    /* verifica se uma sessao esta criada, validando a entrada, caso contrario vai para o login */
     session_start();
+    $sessaoValida = isset($_SESSION['idSessao']) ? $_SESSION['idSessao'] === session_id() : FALSE;
+    
+    if ( $sessaoValida != true ) {
+        header('Location: login.php');
+        exit();
+    }
+
+
+    // recupera o usuario logado, caso contrario vai para o login
+    if ($_SESSION['usuarioLogado'] != NULL) {
+        // nao se esqueca de desserializar o objeto
+        $usuarioLogado = unserialize($_SESSION['usuarioLogado']);
+        $nomeUsuarioLogado = $usuarioLogado->getNome();     
+    } else {
+        header('Location: login.php');
+        exit();
+    }
 ?>
 
 <!DOCTYPE html>
@@ -33,6 +56,9 @@
                 <a class="navbar-brand mx-auto">
                     <img src="img/php_96.png">
                 </a>
+
+                <span class="usuario">Bem-vindo, <?=$nomeUsuarioLogado;?>!</span>
+
             </div>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mynavbar"
@@ -47,7 +73,7 @@
                     <a href="cadastrarProfessor_bs.php" class="nav-link">Cadastrar</a>
                     <a href="consultarProfessor_bs.php" class="nav-link">Consultar</a>
                     <a href="servicos/listarProfessor_servico.php" class="nav-link">Listar</a>
-                    <a href="login.php" class="nav-link">Sair</a>
+                    <a href="servicos/login_servico.php" class="nav-link">Sair</a>
                 </div>
             </div>
         </nav>
@@ -85,12 +111,21 @@
         </div>
 
         <!-- formulario HTML -->
-        <form name="frmCadastrarProfessor" action="servicos/professor_servico.php" method="post" class="my-label-color-purple">
+        <form name="frmCadastrarProfessor" action="servicos/professor_servico.php" method="post" class="my-label-color-purple" enctype="multipart/form-data">
 
             <div class="form-group row">
                 <label for="idNomeProfessor" class="col-sm-2 col-form-label">Nome do Professor</label>
                 <div class="col-sm-10">
                     <input class="form-control" type="text" id="idNomeProfessor" name="nomeProfessor" placeholder="Informe o nome do professor" maxlength="45" required>  
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="idFotoProfessor" class="col-sm-2 col-form-label">Foto do Professor</label>
+                <div class="col-sm-10">
+                    <!-- MAX_FILE_SIZE deve preceder o campo input. Representa o tamanho limite aceito pelo PHP -->
+                    <input type="hidden" name="MAX_FILE_SIZE" value="300000" />
+                    <input class="form-control" type="file" id="idFotoProfessor" name="fotoProfessor" placeholder="Insira a foto do professor">  
                 </div>
             </div>
 

@@ -1,5 +1,29 @@
 <?php
+    require 'modelo/usuario.php';
+    use Mcosf\Testes\Usuario;
+
+    
+    /* verifica se uma sessao esta criada, validando a entrada, caso contrario vai para o login */
     session_start();
+    $sessaoValida = isset($_SESSION['idSessao']) ? $_SESSION['idSessao'] === session_id() : FALSE;
+
+    if ( $sessaoValida != true ) {
+        header('Location: login.php');
+        exit();
+    }
+
+
+    // recupera o usuario logado, caso contrario vai para o login
+    if ($_SESSION['usuarioLogado'] != NULL) {
+        // nao se esqueca de desserializar o objeto
+        $usuarioLogado = unserialize($_SESSION['usuarioLogado']);
+        $nomeUsuarioLogado = $usuarioLogado->getNome();     
+
+    } else {
+        header('location: login.php');
+        exit();
+
+    }
 ?>
 
 <!DOCTYPE html>
@@ -33,6 +57,9 @@
                 <a class="navbar-brand mx-auto">
                     <img src="img/php_96.png">
                 </a>
+                
+                <span class="usuario">Bem-vindo, <?=$nomeUsuarioLogado;?>!</span>
+                
             </div>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mynavbar"
@@ -47,7 +74,7 @@
                     <a href="cadastrarProfessor_bs.php" class="nav-link">Cadastrar</a>
                     <a href="consultarProfessor_bs.php" class="nav-link">Consultar</a>
                     <a href="servicos/listarProfessor_servico.php" class="nav-link">Listar</a>
-                    <a href="login.php" class="nav-link">Sair</a>
+                    <a href="servicos/login_servico.php" class="nav-link">Sair</a>
                 </div>
             </div>
         </nav>

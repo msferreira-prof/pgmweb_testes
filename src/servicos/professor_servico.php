@@ -3,11 +3,47 @@
 require_once '../modelo/professor.php';
 require_once '../bd/professor_bd.php';
 
-/* criar uma sessao */
+/* verifica se uma sessao esta criada, validando a entrada, caso contrario vai para o login */
 session_start();
+$sessaoValida = isset($_SESSION['idSessao']) ? $_SESSION['idSessao'] === session_id() : FALSE;
+
+if ( $sessaoValida != true ) {
+   header('Location: ../login.php');
+   exit();
+}
+
 
 /* receber nome do professor do formulario HTML */
 $nomeProfessor = $_POST['nomeProfessor'];
+
+/* valida se upload da foto foi com sucesso */
+if ( $_FILES['fotoProfessor']['error'] == UPLOAD_ERR_OK ) {
+    
+    $fotoProfessor = $_FILES['fotoProfessor'];
+
+} else {
+    $_SESSION['mensagemRetorno'] = 'Tamanho da imagem informada excede o limite permitido';
+    
+    /* retorna para a pagina de cadastro do professor */
+    header('Location: ../cadastrarProfessor_bs.php');
+    
+    return;
+}
+
+// valida tipo de imagem do upload
+// sao apenas aceitas imagens do tipo JPEG, PNG e JPG
+$tiposImagem = ['image/jpeg', 'image/png', 'image/jpg'];
+if ( in_array($fotoProfessor['type'], $tiposImagem, false ) == FALSE ) {
+    
+    $_SESSION['mensagemRetorno'] = 
+            'Formato de imagem incorreto. Formatos permitidos: jpg, png e jpeg.';
+    
+    /* retorna para a pagina de cadastro do professor */
+    header('Location: ../cadastrarProfessor_bs.php');
+    
+    return;
+}
+
 
 /* validacao pode ser feita no PHP ou no Javascript */
 if ( strlen($nomeProfessor) < 15 ) {
@@ -47,8 +83,11 @@ if ( $objProfessor != null ) {
     return;
 }
 
+
+
+
 // inclusao
-$objProfessor = incluir($nomeProfessor);
+$objProfessor = incluir($nomeProfessor, $fotoProfessor);
 
 if ($objProfessor != null) {
     $mensagemRetorno = "Professor '" . $objProfessor->getNome() . 

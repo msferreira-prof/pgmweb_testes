@@ -9,12 +9,12 @@ class Turma {
     private $codigo;
     private $serie;
     private $sala;
-    private $hora_inicial;
-    private $hora_final;
+    private $horaInicial;
+    private $horaFinal;
     private $professor;
     private $alunos;
 
-    private function __construct() {
+    public function __construct() {
         $alunos = [];
     }
 
@@ -22,7 +22,7 @@ class Turma {
         return $this->codigo;
     }
 
-    public function setCodigo( int $codigo ) {
+    public function setCodigo( string $codigo ) {
         $this->codigo = $codigo;
     }
         
@@ -42,7 +42,7 @@ class Turma {
         return $this->horaInicial;
     }
 
-    public function setHoraInicial( int $horaInicial ) {
+    public function setHoraInicial( string $horaInicial ) {
         $this->serie = $horaInicial;
     }
 
@@ -50,7 +50,7 @@ class Turma {
         return $this->horaFinal;
     }
 
-    public function setHoraFinal( int $horaFinal ) {
+    public function setHoraFinal( string $horaFinal ) {
         $this->horaFinal = $horaFinal;
     }
 
@@ -66,7 +66,26 @@ class Turma {
         return $this->alunos;
     }
 
-    public function setAlunos( Aluno $aluno ) {
-        $this->alunos[] = $aluno;
+    public function setAlunos( array $alunos ) {
+        $this->alunos = $alunos;
     }
+
+    public function addAluno( Aluno $aluno ) {
+        array_push($this->alunos, $aluno);
+    }
+
+    public function removeAluno( int $matriculaAluno ) {
+        for( $i=0; $i < count($this->alunos); $i++ ) {
+            $aluno = $this->alunos[$i];
+            if ( $matriculaAluno == $aluno->getMatricula() ) {
+                unset( $this->aluno[$i] );
+            }
+        }
+    }
+
+    public function removeAlunoV2( Aluno $aluno ) {
+        $i = array_search( $aluno, $this->alunos );
+        unset( $this->aluno[$i] );
+    }
+
 }

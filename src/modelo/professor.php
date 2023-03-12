@@ -5,6 +5,8 @@ class Professor {
 
     private $matricula;
     private $nome;
+    private $nomeFoto;
+
 
     function __construct() {
     }
@@ -28,4 +30,14 @@ class Professor {
     public function getProfessorCompleto() : string {
         return $this->matricula . ' - ' . $this->nome;
     }
+
+
+    public function getNomeFoto() {
+        return $this->nomeFoto;
+    }
+
+    public function setNomeFoto(string $nomeFoto) {
+        return $this->nomeFoto = $nomeFoto;
+    }
+
 }
